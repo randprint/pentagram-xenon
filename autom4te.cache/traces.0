@@ -1,0 +1,481 @@
+m4trace:/usr/share/aclocal-1.11/cond.m4:15: -1- AC_DEFUN([AM_CONDITIONAL], [AC_PREREQ(2.52)dnl
+ ifelse([$1], [TRUE],  [AC_FATAL([$0: invalid condition: $1])],
+	[$1], [FALSE], [AC_FATAL([$0: invalid condition: $1])])dnl
+AC_SUBST([$1_TRUE])dnl
+AC_SUBST([$1_FALSE])dnl
+_AM_SUBST_NOTMAKE([$1_TRUE])dnl
+_AM_SUBST_NOTMAKE([$1_FALSE])dnl
+m4_define([_AM_COND_VALUE_$1], [$2])dnl
+if $2; then
+  $1_TRUE=
+  $1_FALSE='#'
+else
+  $1_TRUE='#'
+  $1_FALSE=
+fi
+AC_CONFIG_COMMANDS_PRE(
+[if test -z "${$1_TRUE}" && test -z "${$1_FALSE}"; then
+  AC_MSG_ERROR([[conditional "$1" was never defined.
+Usually this means the macro was only invoked conditionally.]])
+fi])])
+m4trace:/usr/share/aclocal-1.11/substnot.m4:14: -1- AC_DEFUN([_AM_SUBST_NOTMAKE])
+m4trace:/usr/share/aclocal-1.11/substnot.m4:19: -1- AC_DEFUN([AM_SUBST_NOTMAKE], [_AM_SUBST_NOTMAKE($@)])
+m4trace:acinclude.m4:8: -1- AC_DEFUN([_AC_AM_CONFIG_HEADER_HOOK], [[echo "# timestamp for $1" >$1.stamp]])
+m4trace:acinclude.m4:17: -1- AC_DEFUN([PENT_BUILDCC], [
+if test x$cross_compiling = xyes; then
+  AC_MSG_CHECKING(for a native C compiler)
+  if test x${CC_FOR_BUILD+set} != xset ; then
+    echo "int x;" > conftest.$ac_ext
+    for c in cc gcc c89 c99 ; do
+      if ($c -c -o conftest.o conftest.$ac_ext) >/dev/null 2>&1 ; then
+        CC_FOR_BUILD="$c"; break
+      fi
+    done
+    if test x"$CC_FOR_BUILD" = x ; then
+      CC_FOR_BUILD=no_compiler_found
+    fi
+  fi
+  if test "x$CC_FOR_BUILD" = xno_compiler_found ; then
+    AC_MSG_RESULT(none found)
+  else
+    AC_MSG_RESULT($CC_FOR_BUILD)
+  fi
+
+  # Very basic check for EXEEXT_FOR_BUILD
+  BUILDEXEEXT=
+  case "$build_os" in
+  mingw32* ) BUILDEXEEXT=.exe ;;
+  cygwin* ) BUILDEXEEXT=.exe ;;
+  esac
+else
+  CC_FOR_BUILD=$CC
+  BUILDEXEEXT=$EXEEXT
+fi
+])
+m4trace:acinclude.m4:59: -1- AC_DEFUN([PENT_CHECK_SDLTTF], [
+  REQ_MAJOR=2
+  REQ_MINOR=0
+  REQ_PATCHLEVEL=7
+  REQ_VERSION=$REQ_MAJOR.$REQ_MINOR.$REQ_PATCHLEVEL
+
+  AC_MSG_CHECKING([for SDL_ttf - version >= $REQ_VERSION])
+
+  pent_backupcppflags="$CPPFLAGS"
+  pent_backupldflags="$LDFLAGS"
+  pent_backuplibs="$LIBS"
+
+  CPPFLAGS="$CPPFLAGS $SDL_CFLAGS"
+  LDFLAGS="$LDFLAGS $SDL_LIBS"
+
+  pent_sdlttfok=yes
+
+  dnl First: include "SDL_ttf.h"
+
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+  #include "SDL_ttf.h"
+  ]],)],sdlttfh_found=yes,sdlttfh_found=no)
+
+  if test x$sdlttfh_found = xno; then
+
+    dnl If failed: include <SDL/SDL_ttf.h>
+
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+    #include <SDL/SDL_ttf.h>
+    ]],)],sdlsdlttfh_found=yes,sdlsdlttfh_found=no)
+    if test x$sdlsdlttfh_found = xno; then
+      pent_sdlttfok=no
+    else
+      AC_DEFINE(HAVE_SDL_SDL_TTF_H, 1, [Define to 1 if you have the <SDL/SDL_ttf.h> header file but not "SDL_ttf.h"])
+    fi
+  else
+    AC_DEFINE(HAVE_SDL_TTF_H, 1, [Define to 1 if you have the "SDL_ttf.h" header file])
+  fi
+
+  if test "x$pent_sdlttfok" = xyes; then
+    dnl Version check (cross-compile-friendly idea borrowed from autoconf)
+
+    AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+    #include "SDL.h"
+    #ifdef HAVE_SDL_TTF_H
+    #include "SDL_ttf.h"
+    #else
+    #include <SDL/SDL_ttf.h>
+    #endif
+
+    int main()
+    {
+      static int test_array[1-2*!(SDL_TTF_MAJOR_VERSION>$REQ_MAJOR||(SDL_TTF_MAJOR_VERSION==$REQ_MAJOR&&(SDL_TTF_MINOR_VERSION>$REQ_MINOR||(SDL_TTF_MINOR_VERSION==$REQ_MINOR&&SDL_TTF_PATCHLEVEL>=$REQ_PATCHLEVEL))))];
+      test_array[0] = 0;
+      return 0;
+    }
+    ]])],,[[pent_sdlttfok="no, version < $REQ_VERSION found"]])
+  fi
+
+  dnl Next: try linking
+
+  if test "x$pent_sdlttfok" = xyes; then
+
+    LIBS="$LIBS -lSDL_ttf"
+
+    AC_LINK_IFELSE([AC_LANG_SOURCE([[
+    #include "SDL.h"
+    #ifdef HAVE_SDL_TTF_H
+    #include "SDL_ttf.h"
+    #else
+    #include <SDL/SDL_ttf.h>
+    #endif
+
+    int main(int argc, char* argv[]) {
+      TTF_Init();
+      return 0;
+    }
+    ]])],sdlttflinkok=yes,sdlttflinkok=no)
+    if test x$sdlttflinkok = xno; then
+
+      dnl If failed: try -lSDL_ttf -lfreetype
+      dnl Note: This is mainly for my personal convenience. It should not
+      dnl       be necessary usually, but shouldn't hurt either -wjp, 20050727
+      dnl       (The reason is that I often statically link against SDL_ttf)
+
+      LIBS="$LIBS -lfreetype"
+      AC_LINK_IFELSE([AC_LANG_SOURCE([[
+      #include "SDL.h"
+      #ifdef HAVE_SDL_TTF_H
+      #include "SDL_ttf.h"
+      #else
+      #include <SDL/SDL_ttf.h>
+      #endif
+
+      int main(int argc, char* argv[]) {
+        TTF_Init();
+        return 0;
+      }
+      ]])],sdlttflinkok=yes,sdlttflinkok=no)
+
+      if test x$sdlttflinkok = xno; then
+        pent_sdlttfok=no
+      else
+        SDLTTF_LIBS="-lSDL_ttf -lfreetype"
+      fi
+    else  
+      SDLTTF_LIBS="-lSDL_ttf"
+    fi
+  fi
+
+  AC_MSG_RESULT($pent_sdlttfok)
+
+  LDFLAGS="$pent_backupldflags"
+  CPPFLAGS="$pent_backupcppflags"
+  LIBS="$pent_backuplibs"
+
+  if test "x$pent_sdlttfok" = xyes; then
+    ifelse([$1], , :, [$1])
+  else
+    ifelse([$2], , :, [$2])
+  fi
+])
+m4trace:acinclude.m4:193: -1- AC_DEFUN([PENT_CHECK_SDL], [
+  REQ_MAJOR=1
+  REQ_MINOR=2
+  REQ_PATCHLEVEL=0
+  REQ_VERSION=$REQ_MAJOR.$REQ_MINOR.$REQ_PATCHLEVEL
+
+  pent_backupcppflags="$CPPFLAGS"
+  pent_backupldflags="$LDFLAGS"
+  pent_backuplibs="$LIBS"
+
+  pent_sdlok=yes
+
+  AC_ARG_WITH(sdl-prefix,[  --with-sdl-prefix=PFX   Prefix where SDL is installed (optional)], sdl_prefix="$withval", sdl_prefix="")
+  AC_ARG_WITH(sdl-exec-prefix,[  --with-sdl-exec-prefix=PFX Exec prefix where SDL is installed (optional)], sdl_exec_prefix="$withval", sdl_exec_prefix="")
+
+  dnl First: find sdl-config
+
+  sdl_args=""
+  if test x$sdl_exec_prefix != x ; then
+     sdl_args="$sdl_args --exec-prefix=$sdl_exec_prefix"
+     if test x${SDL_CONFIG+set} != xset ; then
+        SDL_CONFIG=$sdl_exec_prefix/bin/sdl-config
+     fi
+  fi
+  if test x$sdl_prefix != x ; then
+     sdl_args="$sdl_args --prefix=$sdl_prefix"
+     if test x${SDL_CONFIG+set} != xset ; then
+        SDL_CONFIG=$sdl_prefix/bin/sdl-config
+     fi
+  fi
+
+  PATH="$prefix/bin:$prefix/usr/bin:$PATH"
+  AC_PATH_PROG(SDL_CONFIG, sdl-config, no, [$PATH])
+  if test "$SDL_CONFIG" = "no" ; then
+    pent_sdlok=no
+  else
+    SDL_CFLAGS=`$SDL_CONFIG $sdlconf_args --cflags`
+    SDL_LIBS=`$SDL_CONFIG $sdlconf_args --libs`
+
+    sdl_major_version=`$SDL_CONFIG $sdl_args --version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+    sdl_minor_version=`$SDL_CONFIG $sdl_args --version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+    sdl_patchlevel=`$SDL_CONFIG $sdl_args --version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
+  fi
+
+  AC_MSG_CHECKING([for SDL - version >= $REQ_VERSION])
+
+
+  dnl Second: include "SDL.h"
+
+  if test x$pent_sdlok = xyes ; then
+    CPPFLAGS="$CPPFLAGS $SDL_CFLAGS"
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+    #include "SDL.h"
+    ]],)],sdlh_found=yes,sdlh_found=no)
+
+    if test x$sdlh_found = xno; then
+      pent_sdlok=no
+    else
+      AC_DEFINE(HAVE_SDL_H, 1, [Define to 1 if you have the "SDL.h" header file])
+    fi
+  fi
+
+  dnl Next: version check (cross-compile-friendly idea borrowed from autoconf)
+  dnl (First check version reported by sdl-config, then confirm
+  dnl  the version in SDL.h matches it)
+
+  if test x$pent_sdlok = xyes ; then
+
+    if test ! \( \( $sdl_major_version -gt $REQ_MAJOR \) -o \( \( $sdl_major_version -eq $REQ_MAJOR \) -a \( \( $sdl_minor_version -gt $REQ_MINOR \) -o \( \( $sdl_minor_version -eq $REQ_MINOR \) -a \( $sdl_patchlevel -gt $REQ_PATCHLEVEL \) \) \) \) \); then
+      pent_sdlok="no, version < $REQ_VERSION found"
+    else
+      AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+      #include "SDL.h"
+
+      int main()
+      {
+        static int test_array[1-2*!(SDL_MAJOR_VERSION==$sdl_major_version&&SDL_MINOR_VERSION==$sdl_minor_version&&SDL_PATCHLEVEL==$sdl_patchlevel)];
+        test_array[0] = 0;
+        return 0;
+      }
+      ]])],,[[pent_sdlok="no, version of SDL.h doesn't match that of sdl-config"]])
+    fi
+  fi
+
+  dnl Next: try linking
+
+  if test "x$pent_sdlok" = xyes; then
+    LIBS="$LIBS $SDL_LIBS"
+
+    AC_LINK_IFELSE([AC_LANG_SOURCE([[
+    #include "SDL.h"
+
+    int main(int argc, char* argv[]) {
+      SDL_Init(0);
+      return 0;
+    }
+    ]])],sdllinkok=yes,sdllinkok=no)
+    if test x$sdllinkok = xno; then
+      pent_sdlok=no
+    fi
+  fi
+
+  AC_MSG_RESULT($pent_sdlok)
+
+  LDFLAGS="$pent_backupldflags"
+  CPPFLAGS="$pent_backupcppflags"
+  LIBS="$pent_backuplibs"
+
+  if test "x$pent_sdlok" = xyes; then
+    AC_SUBST(SDL_CFLAGS)
+    AC_SUBST(SDL_LIBS)
+    ifelse([$1], , :, [$1])
+  else
+    ifelse([$2], , :, [$2])
+  fi
+])
+m4trace:configure.ac:2: -1- m4_pattern_forbid([^_?A[CHUM]_])
+m4trace:configure.ac:2: -1- m4_pattern_forbid([_AC_])
+m4trace:configure.ac:2: -1- m4_pattern_forbid([^LIBOBJS$], [do not use LIBOBJS directly, use AC_LIBOBJ (see section `AC_LIBOBJ vs LIBOBJS'])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^AS_FLAGS$])
+m4trace:configure.ac:2: -1- m4_pattern_forbid([^_?m4_])
+m4trace:configure.ac:2: -1- m4_pattern_forbid([^dnl$])
+m4trace:configure.ac:2: -1- m4_pattern_forbid([^_?AS_])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^SHELL$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PATH_SEPARATOR$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^exec_prefix$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^prefix$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^program_transform_name$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^bindir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^sbindir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^libexecdir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^datarootdir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^datadir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^sysconfdir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^sharedstatedir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^localstatedir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^includedir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^oldincludedir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^docdir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^infodir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^htmldir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^dvidir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^pdfdir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^psdir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^libdir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^localedir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^mandir$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^DEFS$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^ECHO_C$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^ECHO_N$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^ECHO_T$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^build_alias$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^host_alias$])
+m4trace:configure.ac:2: -1- m4_pattern_allow([^target_alias$])
+m4trace:configure.ac:21: -1- m4_pattern_allow([^build$])
+m4trace:configure.ac:21: -1- m4_pattern_allow([^build_cpu$])
+m4trace:configure.ac:21: -1- m4_pattern_allow([^build_vendor$])
+m4trace:configure.ac:21: -1- m4_pattern_allow([^build_os$])
+m4trace:configure.ac:22: -1- m4_pattern_allow([^host$])
+m4trace:configure.ac:22: -1- m4_pattern_allow([^host_cpu$])
+m4trace:configure.ac:22: -1- m4_pattern_allow([^host_vendor$])
+m4trace:configure.ac:22: -1- m4_pattern_allow([^host_os$])
+m4trace:configure.ac:23: -1- m4_pattern_allow([^target$])
+m4trace:configure.ac:23: -1- m4_pattern_allow([^target_cpu$])
+m4trace:configure.ac:23: -1- m4_pattern_allow([^target_vendor$])
+m4trace:configure.ac:23: -1- m4_pattern_allow([^target_os$])
+m4trace:configure.ac:25: -1- m4_pattern_allow([^PACKAGE$])
+m4trace:configure.ac:26: -1- m4_pattern_allow([^VERSION$])
+m4trace:configure.ac:27: -1- m4_pattern_allow([^VER_MAJOR$])
+m4trace:configure.ac:28: -1- m4_pattern_allow([^VER_MINOR$])
+m4trace:configure.ac:29: -1- m4_pattern_allow([^VER_EXTRA$])
+m4trace:configure.ac:37: -1- m4_pattern_allow([^HAVE_MIDI$])
+m4trace:configure.ac:41: -1- m4_pattern_allow([^EMPTY_FILE$])
+m4trace:configure.ac:45: -1- m4_pattern_allow([^RM$])
+m4trace:configure.ac:48: -1- m4_pattern_allow([^MKDIR$])
+m4trace:configure.ac:69: -1- m4_pattern_allow([^UNIX$])
+m4trace:configure.ac:70: -1- m4_pattern_allow([^LINUX$])
+m4trace:configure.ac:71: -1- m4_pattern_allow([^HAVE_HOME$])
+m4trace:configure.ac:75: -1- m4_pattern_allow([^WIN32$])
+m4trace:configure.ac:84: -1- m4_pattern_allow([^WIN32$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CYGWIN$])
+m4trace:configure.ac:93: -1- m4_pattern_allow([^UNIX$])
+m4trace:configure.ac:94: -1- m4_pattern_allow([^HAVE_HOME$])
+m4trace:configure.ac:95: -1- m4_pattern_allow([^OPENBSD$])
+m4trace:configure.ac:100: -1- m4_pattern_allow([^UNIX$])
+m4trace:configure.ac:101: -1- m4_pattern_allow([^HAVE_HOME$])
+m4trace:configure.ac:111: -1- m4_pattern_allow([^MACOSX$])
+m4trace:configure.ac:119: -1- m4_pattern_allow([^UNIX$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^CFLAGS$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^LDFLAGS$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^ac_ct_CC$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^EXEEXT$])
+m4trace:configure.ac:128: -1- m4_pattern_allow([^OBJEXT$])
+m4trace:configure.ac:129: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.ac:129: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:129: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.ac:130: -1- m4_pattern_allow([^INSTALL_PROGRAM$])
+m4trace:configure.ac:130: -1- m4_pattern_allow([^INSTALL_SCRIPT$])
+m4trace:configure.ac:130: -1- m4_pattern_allow([^INSTALL_DATA$])
+m4trace:configure.ac:131: -1- m4_pattern_allow([^LEX$])
+m4trace:configure.ac:131: -1- m4_pattern_allow([^LEX_OUTPUT_ROOT$])
+m4trace:configure.ac:131: -1- m4_pattern_allow([^LEXLIB$])
+m4trace:configure.ac:131: -1- m4_pattern_allow([^YYTEXT_POINTER$])
+m4trace:configure.ac:132: -1- m4_pattern_allow([^CXX$])
+m4trace:configure.ac:132: -1- m4_pattern_allow([^CXXFLAGS$])
+m4trace:configure.ac:132: -1- m4_pattern_allow([^LDFLAGS$])
+m4trace:configure.ac:132: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.ac:132: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:132: -1- m4_pattern_allow([^CXX$])
+m4trace:configure.ac:132: -1- m4_pattern_allow([^ac_ct_CXX$])
+m4trace:configure.ac:135: -1- PENT_BUILDCC
+m4trace:configure.ac:140: -1- m4_pattern_allow([^USE_PRECOMPILED_HEADER$])
+m4trace:configure.ac:155: -1- m4_pattern_allow([^CXXCPP$])
+m4trace:configure.ac:155: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:155: -1- m4_pattern_allow([^CXXCPP$])
+m4trace:configure.ac:155: -1- m4_pattern_allow([^GREP$])
+m4trace:configure.ac:155: -1- m4_pattern_allow([^EGREP$])
+m4trace:configure.ac:155: -1- m4_pattern_allow([^STDC_HEADERS$])
+m4trace:configure.ac:168: -1- m4_pattern_allow([^HAVE_SNPRINTF$])
+m4trace:configure.ac:175: -1- m4_pattern_allow([^SIZEOF_SHORT$])
+m4trace:configure.ac:176: -1- m4_pattern_allow([^SIZEOF_INT$])
+m4trace:configure.ac:177: -1- m4_pattern_allow([^SIZEOF_LONG$])
+m4trace:configure.ac:178: -1- m4_pattern_allow([^SIZEOF_LONG_LONG$])
+m4trace:configure.ac:179: -1- m4_pattern_allow([^SIZEOF_INTP$])
+m4trace:configure.ac:222: -1- PENT_CHECK_SDL([:], [as_fn_error $? "*** SDL version >= 1.2.0 not found!" "$LINENO" 5])
+m4trace:configure.ac:222: -1- m4_pattern_allow([^SDL_CONFIG$])
+m4trace:configure.ac:222: -1- m4_pattern_allow([^HAVE_SDL_H$])
+m4trace:configure.ac:222: -1- m4_pattern_allow([^SDL_CFLAGS$])
+m4trace:configure.ac:222: -1- m4_pattern_allow([^SDL_LIBS$])
+m4trace:configure.ac:232: -1- m4_pattern_allow([^HAVE_LIBZ$])
+m4trace:configure.ac:241: -1- PENT_CHECK_SDLTTF([:], [as_fn_error $? "*** SDL_ttf version >= 2.0.7 not found!" "$LINENO" 5])
+m4trace:configure.ac:241: -1- m4_pattern_allow([^HAVE_SDL_SDL_TTF_H$])
+m4trace:configure.ac:241: -1- m4_pattern_allow([^HAVE_SDL_TTF_H$])
+m4trace:configure.ac:251: -1- m4_pattern_allow([^HAVE_LIBPNG$])
+m4trace:configure.ac:267: -1- m4_pattern_allow([^HAVE_LIBFREETYPE$])
+m4trace:configure.ac:369: -1- m4_pattern_allow([^DEBUG$])
+m4trace:configure.ac:386: -1- m4_pattern_allow([^USE_VALGRIND$])
+m4trace:configure.ac:399: -1- m4_pattern_allow([^USE_FMOPL_MIDI$])
+m4trace:configure.ac:412: -1- m4_pattern_allow([^USE_TIMIDITY_MIDI$])
+m4trace:configure.ac:419: -1- m4_pattern_allow([^DEFAULT_TIMIDITY_PATH$])
+m4trace:configure.ac:435: -1- m4_pattern_allow([^USE_ALSA_MIDI$])
+m4trace:configure.ac:453: -1- m4_pattern_allow([^USE_FLUIDSYNTH_MIDI$])
+m4trace:configure.ac:481: -1- m4_pattern_allow([^USE_HQ2X_SCALER$])
+m4trace:configure.ac:492: -1- m4_pattern_allow([^USE_HQ3X_SCALER$])
+m4trace:configure.ac:503: -1- m4_pattern_allow([^USE_HQ4X_SCALER$])
+m4trace:configure.ac:514: -1- m4_pattern_allow([^COMPILE_GAMMA_CORRECT_SCALERS$])
+m4trace:configure.ac:525: -1- m4_pattern_allow([^COMPILE_ALL_BILINEAR_SCALERS$])
+m4trace:configure.ac:536: -1- m4_pattern_allow([^BUILTIN_DATA$])
+m4trace:configure.ac:548: -1- AM_CONDITIONAL([GIMP_PLUGIN], [false])
+m4trace:configure.ac:548: -1- m4_pattern_allow([^GIMP_PLUGIN_TRUE$])
+m4trace:configure.ac:548: -1- m4_pattern_allow([^GIMP_PLUGIN_FALSE$])
+m4trace:configure.ac:548: -1- _AM_SUBST_NOTMAKE([GIMP_PLUGIN_TRUE])
+m4trace:configure.ac:548: -1- _AM_SUBST_NOTMAKE([GIMP_PLUGIN_FALSE])
+m4trace:configure.ac:555: -1- m4_pattern_allow([^GIMPTOOL$])
+m4trace:configure.ac:563: -1- m4_pattern_allow([^GIMPTOOL$])
+m4trace:configure.ac:564: -1- AM_CONDITIONAL([GIMP_PLUGIN], [true])
+m4trace:configure.ac:564: -1- m4_pattern_allow([^GIMP_PLUGIN_TRUE$])
+m4trace:configure.ac:564: -1- m4_pattern_allow([^GIMP_PLUGIN_FALSE$])
+m4trace:configure.ac:564: -1- _AM_SUBST_NOTMAKE([GIMP_PLUGIN_TRUE])
+m4trace:configure.ac:564: -1- _AM_SUBST_NOTMAKE([GIMP_PLUGIN_FALSE])
+m4trace:configure.ac:567: -1- m4_pattern_allow([^GIMP_PLUGIN_PREFIX$])
+m4trace:configure.ac:570: -1- m4_pattern_allow([^GIMP_INCLUDES$])
+m4trace:configure.ac:571: -1- m4_pattern_allow([^GIMP_LIBS$])
+m4trace:configure.ac:584: -1- m4_pattern_allow([^CC_FOR_BUILD$])
+m4trace:configure.ac:585: -1- m4_pattern_allow([^BUILDEXEEXT$])
+m4trace:configure.ac:586: -1- m4_pattern_allow([^WARNINGS$])
+m4trace:configure.ac:587: -1- m4_pattern_allow([^PACKAGE$])
+m4trace:configure.ac:588: -1- m4_pattern_allow([^VERSION$])
+m4trace:configure.ac:589: -1- m4_pattern_allow([^VER_MAJOR$])
+m4trace:configure.ac:590: -1- m4_pattern_allow([^VER_MINOR$])
+m4trace:configure.ac:591: -1- m4_pattern_allow([^VER_EXTRA$])
+m4trace:configure.ac:592: -1- m4_pattern_allow([^PROFILE$])
+m4trace:configure.ac:593: -1- m4_pattern_allow([^DATAPATH$])
+m4trace:configure.ac:594: -1- m4_pattern_allow([^USE_PCH$])
+m4trace:configure.ac:595: -1- m4_pattern_allow([^USE_BUILTIN_DATA$])
+m4trace:configure.ac:596: -1- m4_pattern_allow([^SYS_LIBS$])
+m4trace:configure.ac:597: -1- m4_pattern_allow([^GUI_LIBS$])
+m4trace:configure.ac:598: -1- m4_pattern_allow([^CON_LIBS$])
+m4trace:configure.ac:599: -1- m4_pattern_allow([^HOST_SYSTEM$])
+m4trace:configure.ac:604: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:604: -1- m4_pattern_allow([^LTLIBOBJS$])
+m4trace:configure.ac:604: -1- _AC_AM_CONFIG_HEADER_HOOK(["$ac_file"])

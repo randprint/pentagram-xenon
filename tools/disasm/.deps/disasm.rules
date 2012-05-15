@@ -1,0 +1,8 @@
+# This file is generated automatically by genrules.pl. Do not edit!
+
+ifneq ($(LPATH)$(EXEEXT),.)
+disasm: $(LPATH)/disasm$(EXEEXT)
+endif
+$(LPATH)/disasm$(EXEEXT): $(disasm_OBJ)
+	$(CXX) -g -o $@ $+ $(LDFLAGS) $(SYS_LIBS) $(CON_LIBS)
+

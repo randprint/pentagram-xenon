@@ -1,0 +1,8 @@
+# This file is generated automatically by genrules.pl. Do not edit!
+
+ifneq ($(LPATH)$(EXEEXT),.)
+fold: $(LPATH)/fold$(EXEEXT)
+endif
+$(LPATH)/fold$(EXEEXT): $(fold_OBJ)
+	$(CXX) -g -o $@ $+ $(LDFLAGS) $(SYS_LIBS) $(CON_LIBS)
+

@@ -1,0 +1,8 @@
+# This file is generated automatically by genrules.pl. Do not edit!
+
+ifneq ($(LPATH)$(EXEEXT),.)
+flexpack: $(LPATH)/flexpack$(EXEEXT)
+endif
+$(LPATH)/flexpack$(EXEEXT): $(flexpack_OBJ)
+	$(CXX) -g -o $@ $+ $(LDFLAGS) $(SYS_LIBS) $(CON_LIBS)
+

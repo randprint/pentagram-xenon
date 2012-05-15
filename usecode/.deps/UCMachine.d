@@ -1,0 +1,159 @@
+usecode/UCMachine.o: usecode/UCMachine.cpp misc/pent_include.h \
+ misc/config.h misc/common_types.h misc/p_dynamic_cast.h misc/istring.h \
+ misc/Errors.h misc/Console.h misc/pent_valgrind.h usecode/UCMachine.h \
+ usecode/intrinsics.h usecode/UCProcess.h kernel/Process.h \
+ usecode/UCStack.h usecode/Usecode.h kernel/Kernel.h usecode/intrinsics.h \
+ kernel/DelayProcess.h kernel/Process.h filesys/IDataSource.h \
+ /usr/local/xenon/usr/include/SDL/SDL_rwops.h \
+ /usr/local/xenon/usr/include/SDL/SDL_stdinc.h \
+ /usr/local/xenon/usr/include/SDL/SDL_config.h \
+ /usr/local/xenon/usr/include/SDL/SDL_platform.h \
+ /usr/local/xenon/usr/include/SDL/SDL_config_xenon.h \
+ /usr/local/xenon/usr/include/xetypes.h \
+ /usr/local/xenon/usr/include/xenos/xe.h \
+ /usr/local/xenon/usr/include/xenos/xenos.h \
+ /usr/local/xenon/usr/include/xenos/edram.h \
+ /usr/local/xenon/usr/include/usb/usbmain.h \
+ /usr/local/xenon/usr/include/console/console.h \
+ /usr/local/xenon/usr/include/xenon_smc/xenon_smc.h \
+ /usr/local/xenon/usr/include/xenon_soc/xenon_power.h \
+ xenon/libxenon_miss/strings.h \
+ /usr/local/xenon/usr/include/SDL/begin_code.h \
+ /usr/local/xenon/usr/include/SDL/close_code.h \
+ /usr/local/xenon/usr/include/SDL/SDL_error.h filesys/ODataSource.h \
+ misc/common_types.h kernel/CoreApp.h misc/Args.h games/GameInfo.h \
+ world/CurrentMap.h world/World.h usecode/BitSet.h usecode/UCList.h \
+ misc/idMan.h gumps/ConsoleGump.h gumps/Gump.h kernel/Object.h \
+ misc/Rect.h graphics/FrameID.h world/getObject.h \
+ convert/u8/ConvertUsecodeU8.h world/actors/MainActor.h \
+ world/actors/Actor.h world/Container.h world/Item.h graphics/ShapeInfo.h \
+ world/WeaponInfo.h world/ArmourInfo.h world/actors/MonsterInfo.h \
+ world/actors/TreasureInfo.h misc/Box.h world/actors/Animation.h
+
+misc/pent_include.h:
+
+misc/config.h:
+
+misc/common_types.h:
+
+misc/p_dynamic_cast.h:
+
+misc/istring.h:
+
+misc/Errors.h:
+
+misc/Console.h:
+
+misc/pent_valgrind.h:
+
+usecode/UCMachine.h:
+
+usecode/intrinsics.h:
+
+usecode/UCProcess.h:
+
+kernel/Process.h:
+
+usecode/UCStack.h:
+
+usecode/Usecode.h:
+
+kernel/Kernel.h:
+
+usecode/intrinsics.h:
+
+kernel/DelayProcess.h:
+
+kernel/Process.h:
+
+filesys/IDataSource.h:
+
+/usr/local/xenon/usr/include/SDL/SDL_rwops.h:
+
+/usr/local/xenon/usr/include/SDL/SDL_stdinc.h:
+
+/usr/local/xenon/usr/include/SDL/SDL_config.h:
+
+/usr/local/xenon/usr/include/SDL/SDL_platform.h:
+
+/usr/local/xenon/usr/include/SDL/SDL_config_xenon.h:
+
+/usr/local/xenon/usr/include/xetypes.h:
+
+/usr/local/xenon/usr/include/xenos/xe.h:
+
+/usr/local/xenon/usr/include/xenos/xenos.h:
+
+/usr/local/xenon/usr/include/xenos/edram.h:
+
+/usr/local/xenon/usr/include/usb/usbmain.h:
+
+/usr/local/xenon/usr/include/console/console.h:
+
+/usr/local/xenon/usr/include/xenon_smc/xenon_smc.h:
+
+/usr/local/xenon/usr/include/xenon_soc/xenon_power.h:
+
+xenon/libxenon_miss/strings.h:
+
+/usr/local/xenon/usr/include/SDL/begin_code.h:
+
+/usr/local/xenon/usr/include/SDL/close_code.h:
+
+/usr/local/xenon/usr/include/SDL/SDL_error.h:
+
+filesys/ODataSource.h:
+
+misc/common_types.h:
+
+kernel/CoreApp.h:
+
+misc/Args.h:
+
+games/GameInfo.h:
+
+world/CurrentMap.h:
+
+world/World.h:
+
+usecode/BitSet.h:
+
+usecode/UCList.h:
+
+misc/idMan.h:
+
+gumps/ConsoleGump.h:
+
+gumps/Gump.h:
+
+kernel/Object.h:
+
+misc/Rect.h:
+
+graphics/FrameID.h:
+
+world/getObject.h:
+
+convert/u8/ConvertUsecodeU8.h:
+
+world/actors/MainActor.h:
+
+world/actors/Actor.h:
+
+world/Container.h:
+
+world/Item.h:
+
+graphics/ShapeInfo.h:
+
+world/WeaponInfo.h:
+
+world/ArmourInfo.h:
+
+world/actors/MonsterInfo.h:
+
+world/actors/TreasureInfo.h:
+
+misc/Box.h:
+
+world/actors/Animation.h:

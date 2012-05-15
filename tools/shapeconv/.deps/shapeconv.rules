@@ -1,0 +1,8 @@
+# This file is generated automatically by genrules.pl. Do not edit!
+
+ifneq ($(LPATH)$(EXEEXT),.)
+shapeconv: $(LPATH)/shapeconv$(EXEEXT)
+endif
+$(LPATH)/shapeconv$(EXEEXT): $(shapeconv_OBJ)
+	$(CXX) -g -o $@ $+ $(LDFLAGS) $(SYS_LIBS) $(CON_LIBS)
+
