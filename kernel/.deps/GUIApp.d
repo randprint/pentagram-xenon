@@ -38,7 +38,8 @@ kernel/GUIApp.o: kernel/GUIApp.cpp misc/pent_include.h misc/config.h \
  /usr/local/xenon/usr/include/SDL/SDL_events.h \
  /usr/local/xenon/usr/include/SDL/SDL_loadso.h \
  /usr/local/xenon/usr/include/SDL/SDL_timer.h \
- /usr/local/xenon/usr/include/SDL/SDL_version.h kernel/Kernel.h \
+ /usr/local/xenon/usr/include/SDL/SDL_version.h \
+ /usr/local/xenon/usr/include/SDL/SDL_keyboard.h kernel/Kernel.h \
  filesys/FileSystem.h filesys/IDataSource.h \
  /usr/local/xenon/usr/include/SDL/SDL_rwops.h filesys/ODataSource.h \
  misc/common_types.h conf/SettingManager.h misc/istring.h \
@@ -192,6 +193,8 @@ kernel/HIDKeys.h:
 /usr/local/xenon/usr/include/SDL/SDL_timer.h:
 
 /usr/local/xenon/usr/include/SDL/SDL_version.h:
+
+/usr/local/xenon/usr/include/SDL/SDL_keyboard.h:
 
 kernel/Kernel.h:
 

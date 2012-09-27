@@ -81,7 +81,7 @@ GIMP_PLUGIN_MODULES =
 
 USE_BUILTIN_DATA := yes
 
-HOST_SYSTEM =
+HOST_SYSTEM = XENON
 
 SYSTEM :=
 SYSTEM_MODULES :=
@@ -145,7 +145,8 @@ DEPDIRS = $(patsubst %,%/$(top_builddir)/$(DEPDIR),$(MODULES))
 
 # Clean all object files & binaries
 clean: clean-pch clean-datah
-	@rm -fr $(OUTPUT).elf $(OUTPUT).elf32
+	@rm -fr $(OUTPUT).elf
+	@rm -fr $(OUTPUT).elf32
 # Clean *all*
 distclean: clean
 	-$(RM) -r $(DEPDIRS)

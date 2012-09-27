@@ -475,10 +475,10 @@ HID_Key HID_translateSDLJoystickButton(uint8 button)
 {
 	switch(button)
 	{
-		case 0: return HID_MOUSE1;
-		case 1: return HID_MOUSE3;
-		case 2: return HID_ENTER;
-		case 3: return HID_ESCAPE;
+		case 0: return HID_JOY1;
+		case 1: return HID_JOY2;
+		case 2: return HID_JOY3;
+		case 3: return HID_JOY4;
 		case 4: return HID_JOY5;
 		case 5: return HID_JOY6;
 		case 6: return HID_JOY7;

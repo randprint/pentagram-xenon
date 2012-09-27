@@ -56,7 +56,7 @@ CFLAGS := -g -g -O2
 LDFLAGS :=  
 SYS_LIBS :=  -lz
 CON_LIBS := 
-GUI_LIBS :=  -L/usr/lib/i386-linux-gnu -lSDL -lSDL_ttf -lpng
+GUI_LIBS :=  -L/usr/lib -lSDL -lSDL_ttf -lpng
 WARNINGS := -Wall
 
 GIMPTOOL = 

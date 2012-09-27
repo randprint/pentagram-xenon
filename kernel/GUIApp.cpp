@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "GUIApp.h"
 
 #include <SDL.h>
-
+#include <SDL_keyboard.h>
 //!! a lot of these includes are just for some hacks... clean up sometime
 #include "Kernel.h"
 #include "FileSystem.h"
@@ -1502,8 +1502,12 @@ void GUIApp::handleEvent(const SDL_Event& event)
 	uint32 now = SDL_GetTicks();
 	HID_Key key = HID_LAST;
 	HID_Event evn = HID_EVENT_LAST;
+	SDL_Event fakeevent;
+	int mx, my;
 	bool handled = false;
-
+	GUIApp * app = GUIApp::get_instance();
+	app->getMouseCoords(mx, my);
+		
 	switch (event.type) {
 		case SDL_KEYDOWN:
 			key = HID_translateSDLKey(event.key.keysym.sym);
@@ -1539,10 +1543,120 @@ void GUIApp::handleEvent(const SDL_Event& event)
 		case SDL_JOYBUTTONDOWN:
 			key = HID_translateSDLJoystickButton(event.jbutton.button);
 			evn = HID_EVENT_DEPRESS;
+			switch (event.jbutton.button) {
+				case 6:
+					fakeevent.type = SDL_KEYDOWN;
+					fakeevent.key.type = SDL_KEYDOWN;
+					fakeevent.key.keysym.sym = SDLK_SPACE; //32; //space
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 5:
+					fakeevent.type = SDL_KEYDOWN;
+					fakeevent.key.type = SDL_KEYDOWN;
+					fakeevent.key.keysym.sym = SDLK_RETURN; //13; //return(enter?)
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 4:
+					fakeevent.type = SDL_KEYDOWN;
+					fakeevent.key.type = SDL_KEYDOWN;
+					fakeevent.key.keysym.sym = SDLK_ESCAPE; //27; //escape
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 3:
+					fakeevent.type = SDL_KEYDOWN;
+					fakeevent.key.type = SDL_KEYDOWN;
+					fakeevent.key.keysym.sym = SDLK_c; //99; //'c'
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 2:
+					fakeevent.type = SDL_KEYDOWN;
+					fakeevent.key.type = SDL_KEYDOWN;
+					fakeevent.key.keysym.sym = SDLK_i; //105; //'i'
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 1:			
+					fakeevent.type = SDL_MOUSEBUTTONDOWN;
+					fakeevent.button.button = SDL_BUTTON_LEFT;
+			        //perr << "mouse 1 Click: x (" << mx << ") y (" << my << ")" << std::endl;
+					fakeevent.button.x = mx;
+					fakeevent.button.y = my;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 0:			
+					fakeevent.type = SDL_MOUSEBUTTONDOWN;
+					fakeevent.button.button = SDL_BUTTON_RIGHT;
+			        //perr << "mouse 2 Click: x (" << mx << ") y (" << my << ")" << std::endl;
+					fakeevent.button.x = mx;
+					fakeevent.button.y = my;
+					SDL_PushEvent (&fakeevent);
+					break;
+				default:
+					break;
+			}
 		break;
 		case SDL_JOYBUTTONUP:
 			key = HID_translateSDLJoystickButton(event.jbutton.button);
 			evn = HID_EVENT_RELEASE;
+			switch (event.jbutton.button) {
+				case 6:
+					fakeevent.type = SDL_KEYUP;
+					fakeevent.key.type = SDL_KEYUP;
+					fakeevent.key.keysym.sym = SDLK_SPACE;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 5:
+					fakeevent.type = SDL_KEYUP;
+					fakeevent.key.type = SDL_KEYUP;
+					fakeevent.key.keysym.sym = SDLK_RETURN;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 4:
+					fakeevent.type = SDL_KEYUP;
+					fakeevent.key.type = SDL_KEYUP;
+					fakeevent.key.keysym.sym = SDLK_ESCAPE;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 3:
+					fakeevent.type = SDL_KEYUP;
+					fakeevent.key.type = SDL_KEYUP;
+					fakeevent.key.keysym.sym = SDLK_c;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 2:
+					fakeevent.type = SDL_KEYUP;
+					fakeevent.key.type = SDL_KEYUP;
+					fakeevent.key.keysym.sym = SDLK_i;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 1:			
+					fakeevent.type = SDL_MOUSEBUTTONUP;
+					fakeevent.button.button = SDL_BUTTON_LEFT;
+			        perr << "mouse 1 Click: x (" << mx << ") y (" << my << ")" << std::endl;
+					fakeevent.button.x = mx;
+					fakeevent.button.y = my;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 0:			
+					fakeevent.type = SDL_MOUSEBUTTONUP;
+					fakeevent.button.button = SDL_BUTTON_RIGHT;
+			        perr << "mouse 1 Click: x (" << mx << ") y (" << my << ")" << std::endl;
+					fakeevent.button.x = mx;
+					fakeevent.button.y = my;
+					SDL_PushEvent (&fakeevent);
+					break;
+				default:
+					break;
+			}
 		break;
 		case SDL_MOUSEMOTION:
 		{
@@ -1640,7 +1754,7 @@ void GUIApp::handleEvent(const SDL_Event& event)
 			}
 		}
 	}
-	
+
 	// Old style input begins here
 	switch (event.type) {
 
@@ -1649,6 +1763,7 @@ void GUIApp::handleEvent(const SDL_Event& event)
 	// most of these events will probably be passed to a gump manager,
 	// since almost all (all?) user input will be handled by a gump
 
+	
 	case SDL_MOUSEBUTTONDOWN:
 	{
 		int button = event.button.button;

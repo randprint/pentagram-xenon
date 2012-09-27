@@ -45,6 +45,7 @@ pentagram.o: pentagram.cpp misc/pent_include.h misc/config.h \
  misc/common_types.h /usr/local/xenon/usr/include/libfat/fat.h \
  /usr/local/xenon/usr/include/diskio/disc_io.h \
  /usr/local/xenon/usr/include/diskio/ata.h \
+ /usr/local/xenon/usr/include/diskio/disc_io.h \
  /usr/local/xenon/usr/include/sys/iosupport.h \
  /usr/local/xenon/usr/include/sys/statvfs.h \
  /usr/local/xenon/usr/include/xenon_sound/sound.h
@@ -172,6 +173,8 @@ misc/common_types.h:
 /usr/local/xenon/usr/include/diskio/disc_io.h:
 
 /usr/local/xenon/usr/include/diskio/ata.h:
+
+/usr/local/xenon/usr/include/diskio/disc_io.h:
 
 /usr/local/xenon/usr/include/sys/iosupport.h:
 

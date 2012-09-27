@@ -5,22 +5,22 @@
 #define BUILTIN_DATA 1
 
 /* Build all bilinear scaler variants */
-#define COMPILE_ALL_BILINEAR_SCALERS
+#define COMPILE_ALL_BILINEAR_SCALERS 1
 
 /* Build gamma-correcting scalers */
-/* #undef COMPILE_GAMMA_CORRECT_SCALERS */
+#define COMPILE_GAMMA_CORRECT_SCALERS 1
 
 /* Cygwin */
 /* #undef CYGWIN */
 
 /* Debugging mode */
-#define DEBUG 1
+/* #undef DEBUG */
 
 /* Default timidity path */
 /* #undef DEFAULT_TIMIDITY_PATH */
 
 /* HOME env.var exists */
-#define HAVE_HOME 0
+#define HAVE_HOME 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
@@ -45,10 +45,10 @@
 
 /* Define to 1 if you have the <SDL/SDL_ttf.h> header file but not "SDL_ttf.h"
    */
-#define HAVE_SDL_SDL_TTF_H 1
+/* #undef HAVE_SDL_SDL_TTF_H */
 
 /* Define to 1 if you have the "SDL_ttf.h" header file */
-/* #undef HAVE_SDL_TTF_H */
+#define HAVE_SDL_TTF_H 1
 
 /* Some platforms don't have snprintf */
 #define HAVE_SNPRINTF 1
@@ -141,13 +141,13 @@
 #define USE_HQ3X_SCALER 1
 
 /* Build hq4x scaler */
-/* #undef USE_HQ4X_SCALER */
+#define USE_HQ4X_SCALER 1
 
 /* use precompiled header */
 /* #undef USE_PRECOMPILED_HEADER */
 
 /* Enable timidity midi */
-#define USE_TIMIDITY_MIDI 1
+/* #undef USE_TIMIDITY_MIDI */
 
 /* Enable Valgrind support */
 /* #undef USE_VALGRIND */
