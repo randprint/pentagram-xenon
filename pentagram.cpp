@@ -83,7 +83,7 @@ int main()
 	const char* argv[]={};
 	xenon_make_it_faster(XENON_SPEED_FULL);
 	xenos_init(VIDEO_MODE_AUTO);
-	console_init();
+	//console_init();
     xenon_sound_init();
 	// usb	
 	usb_init();
@@ -91,7 +91,8 @@ int main()
 	usb_do_poll();
 	fatInitDefault();
 	findDevices();
-	TR;
+	//TR;
+	
 #endif
 #endif
 	// Initialize Memory Manager here to avoid extra tools depending on it
@@ -114,7 +115,7 @@ int main()
 
 	app.startup();
 	app.run();
-
+		
 	return 0;
 }
 

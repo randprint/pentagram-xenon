@@ -450,7 +450,9 @@ void GUIApp::startup()
 
 	// Unset the console auto paint, since we have finished initing
 	con.SetAutoPaint(0);
-
+#ifdef LIBXENON
+	con.unsetOutputEnabled(1);
+#endif
 //	pout << "Paint Initial display" << std::endl;
 	paint();
 }
@@ -1417,7 +1419,7 @@ void GUIApp::GraphicSysInit()
 
 	// TODO: assign names to these fontnumbers somehow
 	fontmanager->loadTTFont(0, "Vera.ttf", 18, 0xFFFFFF, 0);
-	fontmanager->loadTTFont(1, "VeraBd.ttf", 12, 0xFFFFFF, 0);
+	fontmanager->loadTTFont(1, "VeraBd.ttf", 16, 0xFFFFFF, 0);
 	// GameWidget's version number information:
 	fontmanager->loadTTFont(2, "Vera.ttf", 8, 0xA0A0A0, 0);
 
@@ -1547,35 +1549,35 @@ void GUIApp::handleEvent(const SDL_Event& event)
 				case 6:
 					fakeevent.type = SDL_KEYDOWN;
 					fakeevent.key.type = SDL_KEYDOWN;
-					fakeevent.key.keysym.sym = SDLK_SPACE; //32; //space
+					fakeevent.key.keysym.sym = SDLK_SPACE;
 					fakeevent.key.keysym.mod = KMOD_NONE;
 					SDL_PushEvent (&fakeevent);
 					break;
 				case 5:
 					fakeevent.type = SDL_KEYDOWN;
 					fakeevent.key.type = SDL_KEYDOWN;
-					fakeevent.key.keysym.sym = SDLK_RETURN; //13; //return(enter?)
+					fakeevent.key.keysym.sym = SDLK_RETURN;
 					fakeevent.key.keysym.mod = KMOD_NONE;
 					SDL_PushEvent (&fakeevent);
 					break;
 				case 4:
 					fakeevent.type = SDL_KEYDOWN;
 					fakeevent.key.type = SDL_KEYDOWN;
-					fakeevent.key.keysym.sym = SDLK_ESCAPE; //27; //escape
+					fakeevent.key.keysym.sym = SDLK_ESCAPE;
 					fakeevent.key.keysym.mod = KMOD_NONE;
 					SDL_PushEvent (&fakeevent);
 					break;
 				case 3:
 					fakeevent.type = SDL_KEYDOWN;
 					fakeevent.key.type = SDL_KEYDOWN;
-					fakeevent.key.keysym.sym = SDLK_c; //99; //'c'
+					fakeevent.key.keysym.sym = SDLK_c;
 					fakeevent.key.keysym.mod = KMOD_NONE;
 					SDL_PushEvent (&fakeevent);
 					break;
 				case 2:
 					fakeevent.type = SDL_KEYDOWN;
 					fakeevent.key.type = SDL_KEYDOWN;
-					fakeevent.key.keysym.sym = SDLK_i; //105; //'i'
+					fakeevent.key.keysym.sym = SDLK_i;
 					fakeevent.key.keysym.mod = KMOD_NONE;
 					SDL_PushEvent (&fakeevent);
 					break;
@@ -1641,7 +1643,7 @@ void GUIApp::handleEvent(const SDL_Event& event)
 				case 1:			
 					fakeevent.type = SDL_MOUSEBUTTONUP;
 					fakeevent.button.button = SDL_BUTTON_LEFT;
-			        perr << "mouse 1 Click: x (" << mx << ") y (" << my << ")" << std::endl;
+			        //perr << "mouse 1 Click: x (" << mx << ") y (" << my << ")" << std::endl;
 					fakeevent.button.x = mx;
 					fakeevent.button.y = my;
 					SDL_PushEvent (&fakeevent);
@@ -1649,7 +1651,7 @@ void GUIApp::handleEvent(const SDL_Event& event)
 				case 0:			
 					fakeevent.type = SDL_MOUSEBUTTONUP;
 					fakeevent.button.button = SDL_BUTTON_RIGHT;
-			        perr << "mouse 1 Click: x (" << mx << ") y (" << my << ")" << std::endl;
+			        //perr << "mouse 1 Click: x (" << mx << ") y (" << my << ")" << std::endl;
 					fakeevent.button.x = mx;
 					fakeevent.button.y = my;
 					SDL_PushEvent (&fakeevent);
