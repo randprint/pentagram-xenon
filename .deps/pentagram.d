@@ -42,7 +42,23 @@ pentagram.o: pentagram.cpp misc/pent_include.h misc/config.h \
  kernel/HIDKeys.h kernel/MemoryManager.h misc/version.h \
  filesys/FileSystem.h filesys/IDataSource.h \
  /usr/local/xenon/usr/include/SDL/SDL_rwops.h filesys/ODataSource.h \
- misc/common_types.h /usr/local/xenon/usr/include/libfat/fat.h \
+ misc/common_types.h /usr/local/xenon/usr/include/threads/threads.h \
+ /usr/local/xenon/usr/include/threads/gdb.h \
+ /usr/local/xenon/usr/include/network/network.h \
+ /usr/local/xenon/usr/include/lwipopts.h \
+ /usr/local/xenon/usr/include/lwip/netif.h \
+ /usr/local/xenon/usr/include/lwip/opt.h \
+ /usr/local/xenon/usr/include/lwip/debug.h \
+ /usr/local/xenon/usr/include/lwip/arch.h \
+ /usr/local/xenon/usr/include/arch/cc.h \
+ /usr/local/xenon/usr/include/lwip/err.h \
+ /usr/local/xenon/usr/include/lwip/ip_addr.h \
+ /usr/local/xenon/usr/include/lwip/def.h \
+ /usr/local/xenon/usr/include/lwip/pbuf.h \
+ /usr/local/xenon/usr/include/lwip/dhcp.h \
+ /usr/local/xenon/usr/include/lwip/udp.h \
+ /usr/local/xenon/usr/include/lwip/ip.h \
+ /usr/local/xenon/usr/include/libfat/fat.h \
  /usr/local/xenon/usr/include/diskio/disc_io.h \
  /usr/local/xenon/usr/include/diskio/ata.h \
  /usr/local/xenon/usr/include/diskio/disc_io.h \
@@ -167,6 +183,38 @@ filesys/IDataSource.h:
 filesys/ODataSource.h:
 
 misc/common_types.h:
+
+/usr/local/xenon/usr/include/threads/threads.h:
+
+/usr/local/xenon/usr/include/threads/gdb.h:
+
+/usr/local/xenon/usr/include/network/network.h:
+
+/usr/local/xenon/usr/include/lwipopts.h:
+
+/usr/local/xenon/usr/include/lwip/netif.h:
+
+/usr/local/xenon/usr/include/lwip/opt.h:
+
+/usr/local/xenon/usr/include/lwip/debug.h:
+
+/usr/local/xenon/usr/include/lwip/arch.h:
+
+/usr/local/xenon/usr/include/arch/cc.h:
+
+/usr/local/xenon/usr/include/lwip/err.h:
+
+/usr/local/xenon/usr/include/lwip/ip_addr.h:
+
+/usr/local/xenon/usr/include/lwip/def.h:
+
+/usr/local/xenon/usr/include/lwip/pbuf.h:
+
+/usr/local/xenon/usr/include/lwip/dhcp.h:
+
+/usr/local/xenon/usr/include/lwip/udp.h:
+
+/usr/local/xenon/usr/include/lwip/ip.h:
 
 /usr/local/xenon/usr/include/libfat/fat.h:
 

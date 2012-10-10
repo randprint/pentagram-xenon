@@ -1546,6 +1546,34 @@ void GUIApp::handleEvent(const SDL_Event& event)
 			key = HID_translateSDLJoystickButton(event.jbutton.button);
 			evn = HID_EVENT_DEPRESS;
 			switch (event.jbutton.button) {
+				case 10:
+					fakeevent.type = SDL_KEYDOWN;
+					fakeevent.key.type = SDL_KEYDOWN;
+					fakeevent.key.keysym.sym = SDLK_F8;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 9:
+					fakeevent.type = SDL_KEYDOWN;
+					fakeevent.key.type = SDL_KEYDOWN;
+					fakeevent.key.keysym.sym = SDLK_F7;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 8:
+					fakeevent.type = SDL_KEYDOWN;
+					fakeevent.key.type = SDL_KEYDOWN;
+					fakeevent.key.keysym.sym = SDLK_m;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 7:
+					fakeevent.type = SDL_KEYDOWN;
+					fakeevent.key.type = SDL_KEYDOWN;
+					fakeevent.key.keysym.sym = SDLK_z;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
 				case 6:
 					fakeevent.type = SDL_KEYDOWN;
 					fakeevent.key.type = SDL_KEYDOWN;
@@ -1584,7 +1612,6 @@ void GUIApp::handleEvent(const SDL_Event& event)
 				case 1:			
 					fakeevent.type = SDL_MOUSEBUTTONDOWN;
 					fakeevent.button.button = SDL_BUTTON_LEFT;
-			        //perr << "mouse 1 Click: x (" << mx << ") y (" << my << ")" << std::endl;
 					fakeevent.button.x = mx;
 					fakeevent.button.y = my;
 					SDL_PushEvent (&fakeevent);
@@ -1592,7 +1619,6 @@ void GUIApp::handleEvent(const SDL_Event& event)
 				case 0:			
 					fakeevent.type = SDL_MOUSEBUTTONDOWN;
 					fakeevent.button.button = SDL_BUTTON_RIGHT;
-			        //perr << "mouse 2 Click: x (" << mx << ") y (" << my << ")" << std::endl;
 					fakeevent.button.x = mx;
 					fakeevent.button.y = my;
 					SDL_PushEvent (&fakeevent);
@@ -1605,6 +1631,34 @@ void GUIApp::handleEvent(const SDL_Event& event)
 			key = HID_translateSDLJoystickButton(event.jbutton.button);
 			evn = HID_EVENT_RELEASE;
 			switch (event.jbutton.button) {
+				case 10:
+					fakeevent.type = SDL_KEYUP;
+					fakeevent.key.type = SDL_KEYUP;
+					fakeevent.key.keysym.sym = SDLK_F8;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 9:
+					fakeevent.type = SDL_KEYUP;
+					fakeevent.key.type = SDL_KEYUP;
+					fakeevent.key.keysym.sym = SDLK_F7;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 8:
+					fakeevent.type = SDL_KEYUP;
+					fakeevent.key.type = SDL_KEYUP;
+					fakeevent.key.keysym.sym = SDLK_m;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
+				case 7:
+					fakeevent.type = SDL_KEYUP;
+					fakeevent.key.type = SDL_KEYUP;
+					fakeevent.key.keysym.sym = SDLK_z;
+					fakeevent.key.keysym.mod = KMOD_NONE;
+					SDL_PushEvent (&fakeevent);
+					break;
 				case 6:
 					fakeevent.type = SDL_KEYUP;
 					fakeevent.key.type = SDL_KEYUP;
@@ -1643,7 +1697,6 @@ void GUIApp::handleEvent(const SDL_Event& event)
 				case 1:			
 					fakeevent.type = SDL_MOUSEBUTTONUP;
 					fakeevent.button.button = SDL_BUTTON_LEFT;
-			        //perr << "mouse 1 Click: x (" << mx << ") y (" << my << ")" << std::endl;
 					fakeevent.button.x = mx;
 					fakeevent.button.y = my;
 					SDL_PushEvent (&fakeevent);
@@ -1651,7 +1704,6 @@ void GUIApp::handleEvent(const SDL_Event& event)
 				case 0:			
 					fakeevent.type = SDL_MOUSEBUTTONUP;
 					fakeevent.button.button = SDL_BUTTON_RIGHT;
-			        //perr << "mouse 1 Click: x (" << mx << ") y (" << my << ")" << std::endl;
 					fakeevent.button.x = mx;
 					fakeevent.button.y = my;
 					SDL_PushEvent (&fakeevent);

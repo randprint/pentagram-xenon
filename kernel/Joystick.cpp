@@ -112,7 +112,7 @@ JoystickCursorProcess::~JoystickCursorProcess()
 {
 }
 
-#define AXIS_TOLERANCE 1000
+#define AXIS_TOLERANCE 2000
 
 //! CONSTANTS - and a lot of guess work
 void JoystickCursorProcess::run()
@@ -122,7 +122,7 @@ void JoystickCursorProcess::run()
 	if(joy[js] && ticks)
 	{
 		int tx = now - ticks;
-		int r = 350 - accel * 30;
+		int r = 350 - accel * 20;
 		sint16 jx = SDL_JoystickGetAxis(joy[js], x_axis);
 		sint16 jy = SDL_JoystickGetAxis(joy[js], y_axis);
 		if (jx > AXIS_TOLERANCE || jx < -AXIS_TOLERANCE)
@@ -142,8 +142,8 @@ void JoystickCursorProcess::run()
 		my += dy;
 		app->setMouseCoords(mx, my);
 		++accel;
-		if (accel > 10)
-			accel = 10;
+		if (accel > 15)
+			accel = 15;
 	}
 	else
 	{

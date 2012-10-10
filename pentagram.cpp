@@ -31,6 +31,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <xenos/xenos.h>
 #include <xenos/edram.h>
 #include <xenos/xenos.h>
+#include <threads/threads.h>
+#include <threads/gdb.h>
+#include <network/network.h>
 #include <libfat/fat.h>
 #include <usb/usbmain.h>
 #include <diskio/ata.h>
@@ -83,6 +86,9 @@ int main()
 	const char* argv[]={};
 	xenon_make_it_faster(XENON_SPEED_FULL);
 	xenos_init(VIDEO_MODE_AUTO);
+	threading_init();
+	network_init();
+	gdb_init();
 	//console_init();
     xenon_sound_init();
 	// usb	

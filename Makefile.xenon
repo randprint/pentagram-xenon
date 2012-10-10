@@ -56,19 +56,34 @@ EXEEXT :=
 EMPTY_FILE := /dev/null
 CC_FOR_BUILD := xenon-gcc
 BUILDEXEEXT := 
-MACHDEP := -DXENON -m32 -O2 -mcpu=cell -mtune=cell -fno-tree-vectorize -fno-tree-slp-vectorize -ftree-vectorizer-verbose=1 -flto -fuse-linker-plugin -maltivec -fno-pic -mpowerpc64 -mhard-float -L$(DEVKITXENON)/xenon/lib/32 -u read -u _start -u exc_base
+MACHDEP := -DXENON -m32 -Ofast -mcpu=cell -mtune=cell -fno-tree-vectorize \
+    -fno-tree-slp-vectorize -ftree-vectorizer-verbose=1 -fuse-linker-plugin \
+    -maltivec -mabi=altivec -fno-pic -mpowerpc64 -mhard-float \
+    -L$(DEVKITXENON)/xenon/lib/32 -u read -u _start -u exc_base
 DEPDIR := .deps
-SDL_CFLAGS := -MP -Wall -m32 -I/usr/local/xenon/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT
-CPPFLAGS := -MP -Wall -m32 -g -O2 -DSAFE_CONSOLE_STREAMS -DHAVE_CONFIG_H -DDATA_PATH=\"${datarootdir}/pentagram\" -DXENON -DLIBXENON \
-	-Ilibxenon_miss -I/usr/local/xenon/xenon/include/ -Ixenon/libxenon_miss -I/usr/local/xenon/usr/include/
-CXXFLAGS := -MP -Wall -m32 -g -O2 -DSAFE_CONSOLE_STREAMS -DXENON -DLIBXENON -Ixenon/libxenon_miss -I/usr/local/xenon/xenon/include/ \
-	-I/usr/local/xenon/usr/include/
-CFLAGS := -MP -Wall -m32 -g -O2 -DSAFE_CONSOLE_STREAMS -DXENON -DLIBXENON -Ixenon/libxenon_miss -I/usr/local/xenon/xenon/include/ \
-	-I/usr/local/xenon/usr/include/
+SDL_CFLAGS := -MP -m32 -I/usr/local/xenon/usr/include/SDL -D_GNU_SOURCE=1 \
+    -D_REENTRANT
+CPPFLAGS := -MP -m32 -g -Ofast -mcpu=cell -mtune=cell -fno-tree-vectorize \
+    -fno-tree-slp-vectorize -ftree-vectorizer-verbose=1 -fuse-linker-plugin \
+    -maltivec -mabi=altivec -fno-pic -mpowerpc64 -mhard-float \
+    -DSAFE_CONSOLE_STREAMS -DXENON -DLIBXENON -DHAVE_CONFIG_H \
+    -DDATA_PATH=\"${datarootdir}/pentagram\" -Ilibxenon_miss \
+    -I/usr/local/xenon/xenon/include/ -Ixenon/libxenon_miss \
+    -I/usr/local/xenon/usr/include/
+CXXFLAGS := -MP -m32 -g -Ofast -mcpu=cell -mtune=cell -fno-tree-vectorize \
+    -fno-tree-slp-vectorize -ftree-vectorizer-verbose=1 -fuse-linker-plugin \
+    -maltivec -mabi=altivec -fno-pic -mpowerpc64 -mhard-float \
+    -DSAFE_CONSOLE_STREAMS -DXENON -DLIBXENON -Ixenon/libxenon_miss \
+    -I/usr/local/xenon/xenon/include/ -I/usr/local/xenon/usr/include/
+CFLAGS :=  -MP -g -Ofast $(INCLUDE) -m32 -mcpu=cell -mtune=cell \
+    -fno-tree-vectorize -fno-tree-slp-vectorize -ftree-vectorizer-verbose=1 \
+    -fuse-linker-plugin -maltivec -mabi=altivec -fno-pic -mpowerpc64 \
+    -mhard-float -DSAFE_CONSOLE_STREAMS -DXENON -DLIBXENON -Ixenon/libxenon_miss \
+    -I/usr/local/xenon/xenon/include/ -I/usr/local/xenon/usr/include/
 LDFLAGS := $(MACHDEP) -L/usr/local/xenon/usr/lib $(LDSCRIPT)
 SYS_LIBS := 
 CON_LIBS := 
-GUI_LIBS := -lSDL_ttf -lSDL -lfreetype -lpng -lfat -lbz2 -lz -lglob -lxenon -lc -lm
+GUI_LIBS := -lSDL_ttf -lSDL -lfreetype -lpng -lfat -lbz2 -lz -lxenon -lglob -lc -lm
 WARNINGS := -Wall
 
 GIMPTOOL = 

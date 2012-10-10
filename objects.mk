@@ -307,8 +307,8 @@ DATA_FILES = \
 	data/u8japanese.ini \
 	data/u8spanish.ini \
 	data/u8bindings.ini \
-	data/VeraBd.ttf \
-	data/Vera.ttf \
+	data/palabi.ttf \
+	data/palai.ttf \
 	data/mouse.tga \
 	data/title.png \
 	data/navbar.png \
